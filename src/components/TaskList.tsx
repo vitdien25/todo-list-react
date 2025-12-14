@@ -82,11 +82,19 @@ function TaskList() {
       key: "completed",
       render: (completed: boolean) =>
         completed ? (
-          <Tag color="green" icon={<FiCheck />}>
+          <Tag
+            color="green"
+            icon={<FiCheck />}
+            style={{ display: "inline-flex", alignItems: "center" }}
+          >
             Completed
           </Tag>
         ) : (
-          <Tag color="orange" icon={<FiX />}>
+          <Tag
+            color="orange"
+            icon={<FiX />}
+            style={{ display: "inline-flex", alignItems: "center" }}
+          >
             Pending
           </Tag>
         ),
