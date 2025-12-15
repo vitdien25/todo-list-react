@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { Button, Space, Typography, Card } from "antd";
-import { FiPlus } from "react-icons/fi";
+import { FiLogOut, FiPlus } from "react-icons/fi";
 import TaskList from "../components/TaskList";
 import TaskForm from "../components/TaskForm";
 import SearchBar from "../components/SearchBar";
 import { useAppDispatch } from "../hooks/redux";
 import { addTask } from "../store/taskSlice";
 import type { Task } from "../types/task";
+import { logout } from "../store/authSlice";
 
 const { Title } = Typography;
 
@@ -34,15 +35,29 @@ function HomePage() {
             <div className="search-container">
               <SearchBar />
             </div>
-            <Button
-              type="primary"
-              icon={<FiPlus />}
-              onClick={() => setIsAddModalVisible(true)}
-              className="add-task-btn add-button"
-              size="large"
-            >
-              Add New Task
-            </Button>
+            <div style={{ display: "flex", gap: "10px" }}>
+              <Button
+                type="primary"
+                icon={<FiPlus />}
+                onClick={() => setIsAddModalVisible(true)}
+                className="add-task-btn add-button"
+                size="large"
+              >
+                Add New Task
+              </Button>
+              <Button
+                type="default"
+                icon={<FiLogOut />}
+                className="logout-button add-button"
+                size="large"
+                onClick={() => {
+                  dispatch(logout());
+                  window.location.href = "/login";
+                }}
+              >
+                Logout
+              </Button>
+            </div>
           </div>
 
           <TaskList />
