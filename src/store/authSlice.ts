@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { isTokenExpired } from "../utils/jwt";
 
 interface AuthState {
   access_token: string | null;
@@ -6,11 +7,28 @@ interface AuthState {
   isAuthenticated: boolean;
 }
 
-const initialState: AuthState = {
-  access_token: localStorage.getItem("access_token"),
-  refresh_token: localStorage.getItem("refresh_token"),
-  isAuthenticated: !!localStorage.getItem("access_token"),
+const getInitialAuthState = (): AuthState => {
+  const access_token = localStorage.getItem("access_token");
+  const refresh_token = localStorage.getItem("refresh_token");
+
+  if (!access_token || isTokenExpired(access_token)) {
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
+    return {
+      access_token: null,
+      refresh_token: null,
+      isAuthenticated: false,
+    };
+  }
+
+  return {
+    access_token,
+    refresh_token,
+    isAuthenticated: true,
+  };
 };
+
+const initialState: AuthState = getInitialAuthState();
 
 const authSlice = createSlice({
   name: "auth",
